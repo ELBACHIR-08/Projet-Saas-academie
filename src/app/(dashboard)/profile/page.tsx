@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { usePass } from "../../context/PassContext";
 
 interface StatItem {
   label: string;
@@ -30,6 +31,8 @@ const BADGES: BadgeItem[] = [
 ];
 
 export default function ProfilePage() {
+  const { hasActivePass, setHasActivePass } = usePass();
+
   return (
     <div className="flex flex-col gap-6 px-5 py-6 pb-24">
       {/* Header section */}
@@ -54,6 +57,43 @@ export default function ProfilePage() {
           <span className="text-[10px] font-bold text-[var(--muted-foreground)] uppercase tracking-wider">
             Membre Premium • ID: #4810
           </span>
+        </div>
+      </section>
+
+      {/* SIMULATED SUBSCRIPTION CARD (Pass Académie) */}
+      <section className="flex flex-col gap-3">
+        <h3 className="text-xs font-black uppercase tracking-wider text-[var(--muted-foreground)]">
+          Abonnement & Accès
+        </h3>
+        
+        <div className="border-2 border-[var(--foreground)] p-5 bg-card flex flex-col gap-4 shadow-[4px_4px_0px_0px_var(--foreground)]">
+          <div className="flex items-center justify-between">
+            <span className="font-black text-sm uppercase tracking-tight text-[var(--foreground)]">
+              Pass Académie Quotidien
+            </span>
+            <span className={`text-[10px] font-black uppercase px-2 py-0.5 border ${
+              hasActivePass 
+                ? "bg-[oklch(0.96_0.04_142)] text-[oklch(0.25_0.05_142)] border-[oklch(0.65_0.18_142)]" 
+                : "bg-amber-100 text-amber-800 border-amber-300"
+            }`}>
+              {hasActivePass ? "Actif" : "Inactif"}
+            </span>
+          </div>
+
+          <p className="text-xs text-[var(--muted-foreground)] leading-relaxed font-medium">
+            Activez votre Pass Académie pour débloquer l'accès complet à tous les défis quotidiens en vidéo de 5 minutes et boostez votre montée en compétences.
+          </p>
+
+          <button
+            onClick={() => setHasActivePass(!hasActivePass)}
+            className={`w-full h-12 font-bold uppercase tracking-wider text-xs border border-foreground transition-all cursor-pointer rounded-none shadow-[2.5px_2.5px_0px_0px_var(--foreground)] active:translate-x-[2.5px] active:translate-y-[2.5px] active:shadow-[0px_0px_0px_0px_var(--foreground)] ${
+              hasActivePass 
+                ? "bg-[oklch(0.96_0.04_142)] text-[oklch(0.25_0.05_142)] border-[oklch(0.65_0.18_142)] hover:bg-[oklch(0.93_0.06_142)]" 
+                : "bg-[var(--primary)] text-white hover:bg-[var(--primary)]/90"
+            }`}
+          >
+            {hasActivePass ? "Désactiver mon Pass Académie" : "Activer mon Pass Académie"}
+          </button>
         </div>
       </section>
 

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { PassProvider } from "./context/PassContext";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -20,7 +21,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr" className={`${inter.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col font-sans select-none">{children}</body>
+      <body className="min-h-full flex flex-col font-sans select-none">
+        <PassProvider>{children}</PassProvider>
+      </body>
     </html>
   );
 }

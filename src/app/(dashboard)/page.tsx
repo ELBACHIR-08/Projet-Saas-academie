@@ -2,7 +2,8 @@
 
 import React, { Suspense } from "react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
+import { usePass } from "../context/PassContext";
 
 interface ArchiveTheme {
   id: string;
@@ -24,6 +25,8 @@ const ARCHIVE_THEMES: ArchiveTheme[] = [
 
 function DashboardContent() {
   const searchParams = useSearchParams();
+  const router = useRouter();
+  const { hasActivePass } = usePass();
   const activeTheme = searchParams.get("theme") || "";
 
   // Filter themes if a specific theme filter is selected in the Header
@@ -37,6 +40,16 @@ function DashboardContent() {
     title: "Le Framework AARRR appliqué aux TPE",
     duration: "4 min",
     difficulty: "Intermédiaire",
+  };
+
+  const handleStartDefi = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (!hasActivePass) {
+      router.push("/profile");
+      alert("Pour accéder aux cas pratiques quotidiens, vous devez activer votre Pass Académie.");
+    } else {
+      router.push("/video-session");
+    }
   };
 
   return (
@@ -96,11 +109,12 @@ function DashboardContent() {
             </p>
           </div>
 
-          <Link href="/video-session" className="block w-full">
-            <button className="bg-[var(--primary)] text-white w-full h-12 font-bold uppercase tracking-wider text-xs border border-foreground shadow-[2.5px_2.5px_0px_0px_var(--foreground)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[1.5px_1.5px_0px_0px_var(--foreground)] active:translate-x-[2.5px] active:translate-y-[2.5px] active:shadow-[0px_0px_0px_0px_var(--foreground)] transition-all cursor-pointer rounded-none">
-              Lancer le défi du jour
-            </button>
-          </Link>
+          <button
+            onClick={handleStartDefi}
+            className="bg-[var(--primary)] text-white w-full h-12 font-bold uppercase tracking-wider text-xs border border-foreground shadow-[2.5px_2.5px_0px_0px_var(--foreground)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[1.5px_1.5px_0px_0px_var(--foreground)] active:translate-x-[2.5px] active:translate-y-[2.5px] active:shadow-[0px_0px_0px_0px_var(--foreground)] transition-all cursor-pointer rounded-none"
+          >
+            Lancer le défi du jour
+          </button>
         </div>
       </section>
 

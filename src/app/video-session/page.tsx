@@ -10,6 +10,8 @@ import {
   getOptionClasses,
 } from "../session-logic";
 
+import { usePass } from "../context/PassContext";
+
 const OPTIONS_DATA: Option[] = [
   { id: "opt-a", letter: "A", label: "Manque d'empathie initiale", isCorrect: true },
   { id: "opt-b", letter: "B", label: "Interruption prématurée", isCorrect: false },
@@ -17,12 +19,34 @@ const OPTIONS_DATA: Option[] = [
 ];
 
 export default function VideoSessionPage() {
+  const { hasActivePass } = usePass();
   const [state, setState] = useState<SessionState>("watching");
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [selectedOptionId, setSelectedOptionId] = useState<string | null>(null);
   const [showFeedbackAnimation, setShowFeedbackAnimation] = useState<boolean>(false);
   
   const videoRef = useRef<HTMLVideoElement>(null);
+
+  if (!hasActivePass) {
+    return (
+      <main className="relative flex flex-col w-full max-w-[480px] h-screen mx-auto bg-background text-foreground border-x-4 border-foreground overflow-hidden select-none font-sans shadow-[8px_8px_0px_0px_rgba(0,0,0,0.15)] items-center justify-center p-6 text-center">
+        <div className="w-20 h-20 bg-amber-100 text-amber-800 border-4 border-foreground flex items-center justify-center font-black text-4xl mb-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          🔒
+        </div>
+        <h1 className="text-xl font-black uppercase tracking-tight text-[var(--foreground)] mb-2">
+          Accès Réservé
+        </h1>
+        <p className="text-xs text-[var(--muted-foreground)] leading-relaxed font-semibold mb-8 max-w-xs uppercase">
+          Ce cas d'étude vidéo est réservé aux membres possédant un Pass Académie actif.
+        </p>
+        <Link href="/profile" className="w-full">
+          <button className="bg-[var(--primary)] text-white w-full h-12 font-bold uppercase tracking-wider text-xs border border-foreground shadow-[2.5px_2.5px_0px_0px_var(--foreground)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[1.5px_1.5px_0px_0px_var(--foreground)] active:translate-x-[2.5px] active:translate-y-[2.5px] active:shadow-[0px_0px_0px_0px_var(--foreground)] transition-all cursor-pointer rounded-none">
+            Activer mon Pass sur le Profil
+          </button>
+        </Link>
+      </main>
+    );
+  }
 
   // Play video logic
   const handlePlayVideo = () => {
