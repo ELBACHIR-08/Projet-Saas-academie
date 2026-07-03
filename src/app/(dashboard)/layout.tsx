@@ -90,17 +90,18 @@ export default function DashboardLayout({
   const pathname = usePathname();
   const { userProfile, setUserProfile } = usePass();
 
-  // If user profile is not created yet, force the Onboarding / ProfileCreation screen
+  // Si le profil n'existe pas, on force la création de profil avant d'afficher le reste
   if (!userProfile) {
     return (
-      <div className="relative flex flex-col w-full max-w-[480px] h-screen overflow-hidden mx-auto border-x border-[var(--border)] bg-background">
+      <div className="w-full max-w-[480px] h-screen mx-auto bg-[var(--background)] border-x border-[var(--border)] overflow-hidden">
         <ProfileCreation OnProfileCreate={(profile) => setUserProfile(profile)} />
       </div>
     );
   }
 
+  // Sinon, le reste de votre application (Header, Main view, Footer) s'affiche normalement
   return (
-    <div className="relative flex flex-col w-full max-w-[480px] h-screen overflow-hidden mx-auto border-x border-[var(--border)] bg-background text-foreground shadow-[0_0_24px_rgba(0,0,0,0.05)]">
+    <div className="flex flex-col h-screen w-full max-w-[480px] mx-auto border-x border-[var(--border)] bg-background text-foreground shadow-[0_0_24px_rgba(0,0,0,0.05)] overflow-hidden">
       {/* HEADER: Horizontal scrolling theme tabs with brutalist header */}
       <header className="flex flex-col border-b border-[var(--border)] bg-background z-20 shrink-0">
         <div className="h-14 flex items-center justify-between px-4 border-b border-[var(--border)]">
