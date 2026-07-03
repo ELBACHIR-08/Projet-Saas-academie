@@ -50,7 +50,7 @@ export default function ProfileCreation({ OnProfileCreate }: ProfileCreationProp
               placeholder="Ex: Chérif Thiam"
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
-              className="w-full h-12 px-4 border-2 border-[var(--foreground)] text-sm focus:outline-none focus:border-2 focus:border-[var(--primary)] rounded-none bg-[var(--background)] font-medium text-[var(--foreground)]"
+              className="w-full h-12 px-4 border-2 border-[var(--foreground)] text-sm focus:outline-none focus:border-2 focus:border-[var(--primary)] rounded-none bg-[var(--background)] font-medium"
             />
           </div>
 
@@ -66,7 +66,7 @@ export default function ProfileCreation({ OnProfileCreate }: ProfileCreationProp
               placeholder="Ex: nom@domaine.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full h-12 px-4 border-2 border-[var(--foreground)] text-sm focus:outline-none focus:border-2 focus:border-[var(--primary)] rounded-none bg-[var(--background)] font-medium text-[var(--foreground)]"
+              className="w-full h-12 px-4 border-2 border-[var(--foreground)] text-sm focus:outline-none focus:border-2 focus:border-[var(--primary)] rounded-none bg-[var(--background)] font-medium"
             />
           </div>
 
@@ -75,7 +75,7 @@ export default function ProfileCreation({ OnProfileCreate }: ProfileCreationProp
 
       {/* Section Basse : Bouton d'action principal (Thumb Zone) */}
       <div className="space-y-4 pb-4">
-        <p className="text-[10px] text-center text-[var(--muted-foreground)] px-2 leading-relaxed uppercase">
+        <p className="text-[10px] text-center text-[var(--muted-foreground)] px-2 leading-relaxed">
           En créant votre profil, vous acceptez le suivi de votre progression quotidienne et l'enregistrement de votre historique d'évaluation.
         </p>
         
@@ -83,7 +83,7 @@ export default function ProfileCreation({ OnProfileCreate }: ProfileCreationProp
           type="submit"
           form="profile-form"
           disabled={!fullName || !email}
-          className="w-full h-14 bg-[var(--primary)] text-[var(--primary-foreground)] font-bold text-xs uppercase tracking-widest transition-all rounded-none disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center cursor-pointer shadow-[3px_3px_0px_0px_var(--foreground)] active:translate-x-[3px] active:translate-y-[3px] active:shadow-[0px_0px_0px_0px_var(--foreground)]"
+          className="w-full h-14 bg-[var(--primary)] text-[var(--primary-foreground)] font-bold text-xs uppercase tracking-widest transition-all rounded-none disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center"
         >
           Créer mon profil & commencer
         </button>
