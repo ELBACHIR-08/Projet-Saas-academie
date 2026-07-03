@@ -177,7 +177,7 @@ export default function VideoSessionPage() {
       {/* 3. Zone Question [35vh à 50vh] & Zone Interaction [50vh à 100vh] scrollables ensemble */}
       <section 
         className={`flex-1 flex flex-col px-5 py-6 overflow-y-auto pb-28 transition-all duration-300 ${
-          state === "watching" ? "opacity-35 pointer-events-none" : "opacity-100"
+          state === "watching" ? "opacity-30 pointer-events-none" : "opacity-100"
         }`}
       >
         {/* Zone Question [35vh à 50vh] (aérée) */}
@@ -224,7 +224,7 @@ export default function VideoSessionPage() {
 
           {/* Dynamic Practical Advice (Montessori Feedback) - Fades in dynamically */}
           {state === "feedback" && (
-            <div className={`mt-4 p-4 bg-muted border-2 border-foreground border-l-8 border-l-primary rounded-none shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all duration-500 ease-out ${
+            <div className={`mt-4 p-4 bg-muted border-2 border-foreground border-l-4 border-l-primary rounded-none shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all duration-500 ease-out ${
               showFeedbackAnimation ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
             }`}>
               <h2 className="text-xs font-black text-foreground uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
