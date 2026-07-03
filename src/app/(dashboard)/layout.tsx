@@ -88,13 +88,13 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const { user, setUser } = usePass();
+  const { userProfile, setUserProfile } = usePass();
 
   // If user profile is not created yet, force the Onboarding / ProfileCreation screen
-  if (!user) {
+  if (!userProfile) {
     return (
       <div className="relative flex flex-col w-full max-w-[480px] h-screen overflow-hidden mx-auto border-x border-[var(--border)] bg-background">
-        <ProfileCreation OnProfileCreate={(profile) => setUser(profile)} />
+        <ProfileCreation OnProfileCreate={(profile) => setUserProfile(profile)} />
       </div>
     );
   }

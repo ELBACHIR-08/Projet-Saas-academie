@@ -32,10 +32,10 @@ const BADGES: BadgeItem[] = [
 ];
 
 export default function ProfilePage() {
-  const { hasActivePass, setHasActivePass, user, setUser } = usePass();
+  const { hasActivePass, setHasActivePass, userProfile, setUserProfile } = usePass();
 
-  const displayName = user ? user.fullName : "Jean Dupont";
-  const displayEmail = user ? user.email : "nom@domaine.com";
+  const displayName = userProfile ? userProfile.fullName : "Jean Dupont";
+  const displayEmail = userProfile ? userProfile.email : "nom@domaine.com";
   const initials = displayName
     .split(" ")
     .filter((n) => n.length > 0)
@@ -57,7 +57,7 @@ export default function ProfilePage() {
       </section>
 
       {/* User Info Block */}
-      <section className="border-2 border-[var(--foreground)] p-4 bg-card flex flex-col gap-4 shadow-[4px_4px_0px_0px_var(--foreground)]">
+      <section className="border-2 border-[var(--foreground)] p-4 bg-card flex items-center gap-4 shadow-[4px_4px_0px_0px_var(--foreground)]">
         <div className="flex items-center gap-4">
           <div className="w-14 h-14 bg-[var(--primary)] text-[var(--primary-foreground)] flex items-center justify-center font-black text-2xl border-2 border-foreground select-none">
             {initials}
@@ -76,7 +76,7 @@ export default function ProfilePage() {
         <div className="border-t border-[var(--border)] pt-3 flex justify-end">
           <button
             onClick={() => {
-              setUser(null);
+              setUserProfile(null);
               setHasActivePass(false);
               alert("Profil et Pass réinitialisés avec succès !");
             }}
