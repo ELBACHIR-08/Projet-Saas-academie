@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SaaS Apprentissage - Cas Vidéo</title>
+    <style>
+        /* ==========================================================================
+       DESIGN SYSTEM (Tokens & Couleurs OKLCH - Inspiré Edoki Club / Montessori)
+       ========================================================================== */
+        :root {
+            --background: oklch(1 0 0);
+            --foreground: oklch(0.25 0.02 264);
+            --card: oklch(1 0 0);
+            --card-foreground: oklch(0.25 0.02 264);
+
+            --primary: oklch(0.61 0.16 238);
+            /* Bleu Éducatif Vibrant */
+            --primary-foreground: oklch(0.99 0 0);
+            --secondary: oklch(0.72 0.18 64);
+            /* Orange Progression */
+            --secondary-foreground: oklch(0.22 0.04 64);
+
+            --muted: oklch(0.96 0.01 238);
+            --muted-foreground: oklch(0.55 0.03 238);
+            --destructive: oklch(0.58 0.21 24);
+            /* Corail Doux Alertes */
+            --destructive-foreground: oklch(0.99 0 0);
+
+            --border: oklch(0.91 0.01 238);
+            --ring: oklch(0.61 0.16 238 / 40%);
+            --radius: 1rem;
+            /* Confort Tactile 16px */
+
+            /* Tokens d'États Supplémentaires pour le Feedback */
+            --success-bg: oklch(0.96 0.04 142);
+            --success-border: oklch(0.65 0.18 142);
+            --success-text: oklch(0.25 0.05 142);
+        }
+
+        /* Reset global axé performance et mobile */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--foreground);
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        /* ==========================================================================
+       LAYOUT DE L'ÉCRAN (Viewport Budget & Agile UX)
+       ========================================================================== */
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            max-width: 480px;
+            /* Sécurise l'affichage sur les grands téléphones */
+            margin: 0 auto;
+            position: relative;
+            background-color: var(--background);
+        }
+
+        /* Zone 1 : Le Lecteur Vidéo (0 à 35vh) */
+        .video-zone {
+            height: 35vh;
+            background-color: oklch(0.15 0 0);
+            /* Noir neutre pour isoler la vidéo */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .video-player {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .video-overlay-msg {
+            position: absolute;
+            bottom: 12px;
+            left: 12px;
+            background: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            padding: 6px 12px;
+            border-radius: calc(var(--radius) - 6px);
+            font-size: 0.75rem;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        /* Zone 2 & 3 combinées : Déroulement Dynamique (35vh à 100vh) */
+        .interactive-zone {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 1.25rem;
+            overflow-y: auto;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Conteneur de la Question */
+        .question-box {
+            margin-bottom: 1.25rem;
+        }
+
+        .category-badge {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--primary);
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .question-text {
+            font-size: 1.2rem;
+            font-weight: 700;
+            line-height: 1.4;
+        }
+
+        /* Liste des Options (Boutons larges Thumb Zone) */
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 5rem;
+            /* Espace de sécurité pour éviter que le bouton fixe ne masque un choix */
+        }
+
+        .option-card {
+            width: 100%;
+            min-height: 56px;
+            /* Target tactile minimum */
+            padding: 14px 18px;
+            background: var(--background);
+            border: 2px solid var(--border);
+            border-radius: var(--radius);
+            text-align: left;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--foreground);
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            display: flex;
+            align-items: center;
+        }
+
+        .option-card:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px var(--ring);
+        }
+
+        /* Bloc Pédagogique (Conseil pratique caché par défaut) */
+        .feedback-box {
+            background-color: var(--muted);
+            border-radius: var(--radius);
+            padding: 1rem;
+            margin-top: 0.5rem;
+            display: none;
+            border-left: 4px solid var(--secondary);
+        }
+
+        .feedback-title {
+            font-weight: 700;
+            color: var(--secondary-foreground);
+            margin-bottom: 4px;
+            font-size: 0.9rem;
+        }
+
+        .feedback-text {
+            font-size: 0.9rem;
+            line-height: 1.4;
+            color: var(--foreground);
+        }
+
+        /* Bouton Principal Fixé en Bas (Sticky Action) */
+        .action-wrapper {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(to top, var(--background) 80%, transparent);
+        }
+
+        .btn-main {
+            width: 100%;
+            height: 52px;
+            background-color: var(--primary);
+            color: var(--primary-foreground);
+            border: none;
+            border-radius: var(--radius);
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-main:disabled {
+            background-color: oklch(0.92 0 0);
+            color: oklch(0.6 0 0);
+            cursor: not-allowed;
+        }
+
+        /* ==========================================================================
+       COMPORTEMENTS DES ÉTATS DE L'AUTOMATE DE L'INTERFACE
+       ========================================================================== */
+
+        /* ÉTAT 1 : Visionnage exclusif en cours */
+        [data-state="watching"] .interactive-zone {
+            opacity: 0.3;
+            pointer-events: none;
+            /* Interdit toute interaction prématurée */
+            transform: translateY(20px);
+        }
+
+        /* ÉTAT 2 : Vidéo terminée -> Choix activés */
+        [data-state="question"] .interactive-zone {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        [data-state="question"] .option-card.selected {
+            border-color: var(--primary);
+            background-color: oklch(0.97 0.02 238);
+        }
+
+        /* ÉTAT 3 : Feedback rendu après validation */
+        [data-state="feedback"] .option-card {
+            pointer-events: none;
+        }
+
+        /* On fige le choix */
+        [data-state="feedback"] .feedback-box {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        [data-state="feedback"] .video-overlay-msg {
+            opacity: 0;
+        }
+
+        /* Styles applicatifs des réponses justes / fausses */
+        [data-state="feedback"] .option-card.correct {
+            border-color: var(--success-border);
+            background-color: var(--success-bg);
+            color: var(--success-text);
+        }
+
+        [data-state="feedback"] .option-card.wrong.selected {
+            border-color: var(--destructive);
+            background-color: oklch(0.96 0.03 24);
+            color: var(--destructive);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body data-state="watching">
+
+    <main class="app-container">
+
+        <!-- ZONE 1 : Le Lecteur de Cas Vidéo -->
+        <section class="video-zone">
+            <!-- Remplacement par une vidéo d'illustration libre très légère -->
+            <video id="player" class="video-player" controls playsinline preload="metadata">
+                <source
+                    src="https://assets.mixkit.co/videos/preview/mixkit-man-holding-a-smartphone-close-up-40046-large.mp4"
+                    type="video/mp4">
+            </video>
+            <div id="overlay-msg" class="video-overlay-msg">Finir la vidéo pour répondre</div>
+        </section>
+
+        <!-- ZONE 2 & 3 : Espace dynamique Questions / Choix du pouce -->
+        <section class="interactive-zone">
+
+            <article class="question-box">
+                <span class="category-badge">Cas Pratique #12</span>
+                <h1 class="question-text">Quelle est la première action à mener face à cette situation de crise sur le
+                    terrain ?</h1>
+            </article>
+
+            <div class="options-list">
+                <button class="option-card" data-index="0">A) Contacter immédiatement l'équipe technique locale</button>
+                <button class="option-card" data-index="1" data-correct="true">B) Couper le flux principal et isoler le
+                    segment</button>
+                <button class="option-card" data-index="2">C) Attendre la synchronisation automatique du serveur de
+                    secours</button>
+            </div>
+
+            <!-- Le conseil pratique (Caché au départ) -->
+            <div class="feedback-box">
+                <h2 class="feedback-title">💡 Le conseil pratique Montessori :</h2>
+                <p class="feedback-text">Dans le contexte d'infrastructures distribuées à faible bande passante,
+                    l'isolation immédiate du segment évite la propagation des erreurs et préserve les paquets de données
+                    restants.</p>
+            </div>
+
+        </section>
+
+        <!-- ZONE FIXE : Bouton d'action à portée de pouce -->
+        <div class="action-wrapper">
+            <button id="action-btn" class="btn-main" disabled>Regarder la vidéo</button>
+        </div>
+
+    </main>
+
+    <!-- AUTOMATE D'ÉTATS (Contrôleur JavaScript minimal) -->
+    <script>
+        const player = document.getElementById('player');
+        const body = document.body;
+        const actionBtn = document.getElementById('action-btn');
+        const options = document.querySelectorAll('.option-card');
+        let selectedOption = null;
+
+        // Événement 1 : La vidéo se termine -> Passage à l'État "Question"
+        player.onended = function () {
+            if (body.getAttribute('data-state') === 'watching') {
+                body.setAttribute('data-state', 'question');
+                actionBtn.innerText = 'Sélectionner une réponse';
+            }
+        };
+
+        // Événement 2 : Gestion de la sélection à une main (Thumb zone)
+        options.forEach(option => {
+            option.addEventListener('click', () => {
+                if (body.getAttribute('data-state') !== 'question') return;
+
+                options.forEach(opt => opt.classList.remove('selected'));
+                option.classList.add('selected');
+                selectedOption = option;
+
+                actionBtn.removeAttribute('disabled');
+                actionBtn.innerText = 'Valider ma réponse';
+            });
+        });
+
+        // Événement 3 : Validation -> Passage à l'État "Feedback" immédiat
+        actionBtn.addEventListener('click', () => {
+            if (body.getAttribute('data-state') === 'question' && selectedOption) {
+                body.setAttribute('data-state', 'feedback');
+
+                // Attribution des classes de correction sur les cartes
+                options.forEach(opt => {
+                    if (opt.getAttribute('data-correct') === 'true') {
+                        opt.classList.add('correct');
+                    } else {
+                        opt.classList.add('wrong');
+                    }
+                });
+
+                actionBtn.innerText = 'Continuer mon parcours';
+                actionBtn.onclick = () => alert('Bravo ! Passage au cas suivant.');
+            }
+        });
+    </script>
+</body>
+
+</html>

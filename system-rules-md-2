@@ -1,0 +1,73 @@
+# Instructions de Développement et Règles Générales (Master System Rules)
+## Agent de Développement Automatisé (Antigravity Environment)
+
+---
+
+## 1. Introduction et Objectifs
+Ce document définit les règles de développement, les standards de codage, les principes d'architecture et les directives de design que l'agent automatisé doit impérativement respecter. 
+
+Toutes les applications et modules générés sont destinés à être déployés en **production**. La tolérance pour la dette technique, les failles de sécurité, le code non documenté ou le non-respect de la charte graphique est de **zéro**.
+
+---
+
+## 2. Principes Fondamentaux d'Architecture et de Conception
+
+### 2.1 Principes SOLID
+* **S - Single Responsibility Principle (SRP) :** Une classe, un module ou une fonction ne doit avoir qu'une seule raison de changer.
+* **O - Open/Closed Principle (OCP) :** Les entités logicielles doivent être ouvertes à l'extension, mais fermées à la modification.
+* **L - Liskov Substitution Principle (LSP) :** Les objets d'une classe dérivée doivent pouvoir remplacer les objets de la classe de base sans altérer la cohérence du programme.
+* **I - Interface Segregation Principle (ISP) :** Préférer plusieurs interfaces spécifiques à une seule interface générale.
+* **D - Dependency Inversion Principle (DIP) :** Dépendre des abstractions, pas des implémentations concrètes. Injecter systématiquement les dépendances.
+
+### 2.2 Clean Architecture
+Le code doit isoler la logique métier des frameworks, bases de données et interfaces externes : Core (Domain/Use Cases) sans dépendances tierces, Infrastructure et Présentation étanches.
+
+### 2.3 KISS, DRY et YAGNI
+Éviter la sur-ingénierie, factoriser intelligemment le code et ne pas anticiper de fonctionnalités hypothétiques.
+
+---
+
+## 3. Standards de Codage et Qualité du Code
+* **Typage Strict :** Mode strict activé par défaut (TypeScript ou annotations de types).
+* **Fail-Fast :** Validation immédiate des payloads d'entrée et gestion défensive des erreurs (aucun try-catch vide).
+
+---
+
+## 4. Guide du Design System UI (Charte Lumineuse & Éducative)
+
+Les couleurs de marque sont adaptées de l'univers ludo-éducatif et Montessori d'**Edoki Club**. L'espace **OKLCH** est obligatoire.
+
+```css
+:root {
+  /* Éléments de structure et de surface (Lumineux & Épurés) */
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.25 0.02 264); /* Anthracite doux pour une lecture reposante */
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.25 0.02 264);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.25 0.02 264);
+
+  /* Actions Principales et Secondaires (Charte Edoki / Montessori) */
+  --primary: oklch(0.61 0.16 238); /* Bleu Éducatif Edoki : Stimulant et accessible */
+  --primary-foreground: oklch(0.99 0 0); 
+  --secondary: oklch(0.72 0.18 64); /* Orange/Ambre Montessori : Idéal pour la progression */
+  --secondary-foreground: oklch(0.22 0.04 64); 
+
+  /* États discrets et neutres */
+  --muted: oklch(0.96 0.01 238); 
+  --muted-foreground: oklch(0.55 0.03 238);
+  --accent: oklch(0.96 0.01 238);
+  --accent-foreground: oklch(0.25 0.02 264);
+
+  /* États Critiques et Alertes */
+  --destructive: oklch(0.58 0.21 24); /* Corail/Rouge chaleureux, non-agressif */
+  --destructive-foreground: oklch(0.99 0 0);
+
+  /* Bordures et Inputs */
+  --border: oklch(0.91 0.01 238);
+  --input: oklch(0.91 0.01 238);
+  --ring: oklch(0.61 0.16 238 / 50%);
+
+  /* Rayons de courbure (Esprit d'apprentissage tactile) */
+  --radius: 1rem; /* 16px pour le confort d'usage mobile */
+}

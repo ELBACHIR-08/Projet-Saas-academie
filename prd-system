@@ -1,0 +1,26 @@
+:root {
+    --background: oklch(1 0 0);
+    --foreground: oklch(0.141 0.005 285.823); /* Anthracite très profond */
+    --card: oklch(1 0 0);
+    --card - foreground: oklch(0.141 0.005 285.823);
+    --popover: oklch(1 0 0);
+    --popover - foreground: oklch(0.141 0.005 285.823);
+
+    --primary: oklch(0.488 0.243 264.376); /* Indigo Vibrant (Action principale) */
+    --primary - foreground: oklch(0.97 0.014 254.604);
+    --secondary: oklch(0.967 0.001 286.375); /* Teinte claire de structure */
+    --secondary - foreground: oklch(0.21 0.006 285.885);
+
+    --muted: oklch(0.967 0.001 286.375); /* Fond du bloc de Conseil Pratique */
+    --muted - foreground: oklch(0.552 0.016 285.938);
+    --accent: oklch(0.967 0.001 286.375);
+    --accent - foreground: oklch(0.21 0.006 285.885);
+
+    --destructive: oklch(0.577 0.245 27.325); /* Corail d'alerte ou de mauvaise réponse */
+    --border: oklch(0.92 0.004 286.32);
+    --input: oklch(0.92 0.004 286.32);
+    --ring: oklch(0.705 0.015 286.067);
+
+    /* Contrainte d'architecture graphique majeure */
+    --radius: 0;
+}

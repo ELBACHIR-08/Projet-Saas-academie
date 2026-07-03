@@ -1,0 +1,100 @@
+# Guide des Règles de Design UI et Intégration du Design System
+## Spécification Géométrique Épurée[Radius: 0] — Antigravity Environment
+
+---
+
+## 1. Philosophie de l'Interface & Directives Esthétiques
+L'agent doit concevoir des interfaces qui tirent parti de la contrainte structurelle du **zéro arrondi (`--radius: 0`)**. Pour éviter un effet daté ou trop brut, l'agent appliquera trois règles fondamentales:
+1. ** Équilibre par le Vide(Whitespace) :** Augmenter de 15 % les marges internes(* paddings *) par rapport à une interface classique. Le vide doit isoler le texte pour garantir la clarté.
+2. ** Lignes de Force Claires:** Les séparations horizontales et verticales via `--border` doivent être nettes, fines(`1px`) et systématiques pour segmenter l'espace sans alourdir.
+3. ** Contrastes Typographiques Typés:** Utiliser des graisses de texte très marquées(uniquement`font-weight: 700` ou`800` pour les titres, et`400` ou`500` pour le corps) afin de structurer la lecture visuelle.
+
+---
+
+## 2. Déclaration Limite du Design System(Tokens CSS)
+
+L'agent doit injecter et utiliser exclusivement les variables suivantes dans les feuilles de styles (ou configurations Tailwind/Shadcn) :
+
+    ```css
+:root {
+  /* Éléments de structure et de surface (Fonds Lumineux) */
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.141 0.005 285.823);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.141 0.005 285.823);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.141 0.005 285.823);
+
+  /* Actions Principales et Secondaires (Indigo Vibrant & Nuances Douces) */
+  --primary: oklch(0.488 0.243 264.376);
+  --primary-foreground: oklch(0.97 0.014 254.604);
+  --secondary: oklch(0.967 0.001 286.375);
+  --secondary-foreground: oklch(0.21 0.006 285.885);
+
+  /* États discrets et neutres */
+  --muted: oklch(0.967 0.001 286.375);
+  --muted-foreground: oklch(0.552 0.016 285.938);
+  --accent: oklch(0.967 0.001 286.375);
+  --accent-foreground: oklch(0.21 0.006 285.885);
+
+  /* États Critiques et Alertes */
+  --destructive: oklch(0.577 0.245 27.325);
+
+  /* Bordures et Éléments de Saisie */
+  --border: oklch(0.92 0.004 286.32);
+  --input: oklch(0.92 0.004 286.32);
+  --ring: oklch(0.705 0.015 286.067);
+
+  /* Structure de Navigation (Sidebar) */
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.141 0.005 285.823);
+  --sidebar-primary: oklch(0.546 0.245 262.881);
+  --sidebar-primary-foreground: oklch(0.97 0.014 254.604);
+  --sidebar-accent: oklch(0.967 0.001 286.375);
+  --sidebar-accent-foreground: oklch(0.21 0.006 285.885);
+  --sidebar-border: oklch(0.92 0.004 286.32);
+  --sidebar-ring: oklch(0.705 0.015 286.067);
+
+  /* Contrainte de structure stricte : Zéro Arrondi */
+  --radius: 0;
+}
+
+.dark {
+  /* Éléments de structure et de surface (Fonds Sombres Profonds) */
+  --background: oklch(0.141 0.005 285.823);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.21 0.006 285.885);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.21 0.006 285.885);
+  --popover-foreground: oklch(0.985 0 0);
+
+  /* Actions Principales et Secondaires */
+  --primary: oklch(0.424 0.199 265.638);
+  --primary-foreground: oklch(0.97 0.014 254.604);
+  --secondary: oklch(0.274 0.006 286.033);
+  --secondary-foreground: oklch(0.985 0 0);
+
+  /* États discrets */
+  --muted: oklch(0.274 0.006 286.033);
+  --muted-foreground: oklch(0.705 0.015 286.067);
+  --accent: oklch(0.274 0.006 286.033);
+  --accent-foreground: oklch(0.985 0 0);
+
+  /* États Critiques */
+  --destructive: oklch(0.704 0.191 22.216);
+
+  /* Bordures et Saisie */
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.552 0.016 285.938);
+
+  /* Navigation Sidebar Dark */
+  --sidebar: oklch(0.21 0.006 285.885);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.623 0.214 259.815);
+  --sidebar-primary-foreground: oklch(0.97 0.014 254.604);
+  --sidebar-accent: oklch(0.274 0.006 286.033);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.552 0.016 285.938);
+}

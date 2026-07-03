@@ -1,0 +1,137 @@
+# Instructions de Développement et Règles Générales (Master System Rules)
+## Agent de Développement Automatisé (Antigravity Environment)
+
+---
+
+## 1. Introduction et Objectifs
+Ce document définit les règles de développement, les standards de codage, les principes d'architecture et les directives de design que l'agent automatisé doit impérativement respecter. 
+
+Toutes les applications et modules générés sont destinés à être déployés en **production**. La tolérance pour la dette technique, les failles de sécurité, le code non documenté ou le non-respect de la charte graphique est de **zéro**.
+
+---
+
+## 2. Principes Fondamentaux d'Architecture et de Conception
+
+### 2.1 Principes SOLID
+* **S - Single Responsibility Principle (SRP) :** Une classe, un module ou une fonction ne doit avoir qu'une seule raison de changer.
+* **O - Open/Closed Principle (OCP) :** Les entités logicielles doivent être ouvertes à l'extension, mais fermées à la modification.
+* **L - Liskov Substitution Principle (LSP) :** Les objets d'une classe dérivée doivent pouvoir remplacer les objets de la classe de base sans altérer la cohérence du programme.
+* **I - Interface Segregation Principle (ISP) :** Préférer plusieurs interfaces spécifiques à une seule interface générale.
+* **D - Dependency Inversion Principle (DIP) :** Dépendre des abstractions, pas des implémentations concrètes. Injecter systématiquement les dépendances.
+
+### 2.2 Clean Architecture & Découpage en Couches
+Le code doit isoler la logique métier des frameworks, bases de données et interfaces externes :
+* **Domain (Cœur Métier) :** Contient les entités, les règles métier pures et les interfaces de référentiels (Repository). Aucune dépendance externe.
+* **Use Cases / Application :** Orchestre les flux de données vers et depuis le domaine.
+* **Infrastructure :** Implémentations concrètes (Accès BD, appels API tiers, connecteurs).
+* **Presentation / Interfaces :** Contrôleurs API, composants UI, abonnés aux événements.
+
+### 2.3 KISS, DRY et YAGNI
+* **KISS (Keep It Simple, Stupid) :** Éviter la sur-ingénierie. Une solution simple et lisible est toujours supérieure.
+* **DRY (Don't Repeat Yourself) :** Toute logique métier doit avoir une représentation unique et non ambiguë au sein du système.
+* **YAGNI (You Ain't Gonna Need It) :** Ne pas implémenter de fonctionnalités ou d'optimisations prématurées basées sur des besoins futurs hypothétiques.
+
+---
+
+## 3. Standards de Codage et Qualité du Code
+
+### 3.1 Lisibilité et Auto-documentation
+* Le code doit être explicite. Les noms de variables, fonctions et classes doivent révéler leur intention sans ambiguïté.
+* *À proscrire :* `let d = new Date();` / `function chk(u) { ... }`
+* *À suivre :* `let userRegistrationDate = new Date();` / `function isUserAccountActive(user) { ... }`
+
+### 3.2 Gestion des Erreurs et Robustesse
+* **Pas d'interception silencieuse :** Interdiction de faire des blocs `try-catch` vides ou de masquer les erreurs.
+* **Fail-Fast :** Valider les entrées (arguments de fonction, payloads d'API) dès le point d'entrée et lever une exception immédiatement en cas de non-conformité.
+* **Typage strict :** Utiliser un langage typé ou appliquer des annotations strictes (TypeScript ou Python Type Hints). Le mode strict doit être activé par défaut.
+
+---
+
+## 4. Guide du Design System UI & Intégration Graphique
+
+Les interfaces doivent être cohérentes, épurées, lumineuses et conçues avec une approche **Mobile-First**. L'usage de l'espace colorimétrique perceptuel **OKLCH** est obligatoire pour garantir l'accessibilité (normes WCAG). La charte est adaptée de l'univers ludo-éducatif et Montessori d'**Edoki Club**.
+
+### 4.1 Jetons de Conception Éducatifs (CSS Tokens)
+
+```css
+:root {
+  /* Éléments de structure et de surface (Lumineux & Épurés) */
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.25 0.02 264); /* Anthracite doux pour une lecture reposante */
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.25 0.02 264);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.25 0.02 264);
+
+  /* Actions Principales et Secondaires (Charte Edoki / Montessori) */
+  --primary: oklch(0.61 0.16 238); /* Bleu Éducatif Edoki : Stimulant et accessible */
+  --primary-foreground: oklch(0.99 0 0); /* Texte blanc pur sur fond bleu */
+  --secondary: oklch(0.72 0.18 64); /* Orange/Ambre Montessori : Idéal pour la progression */
+  --secondary-foreground: oklch(0.22 0.04 64); /* Texte sombre contrasté sur l'orange */
+
+  /* États discrets et neutres */
+  --muted: oklch(0.96 0.01 238); /* Fond d'onglet ou badge discret */
+  --muted-foreground: oklch(0.55 0.03 238);
+  --accent: oklch(0.96 0.01 238);
+  --accent-foreground: oklch(0.25 0.02 264);
+
+  /* États Critiques et Alertes (Actions destructives ou erreurs) */
+  --destructive: oklch(0.58 0.21 24); /* Corail/Rouge chaleureux, non-agressif mais ultra-lisible */
+  --destructive-foreground: oklch(0.99 0 0);
+
+  /* Bordures et Inputs */
+  --border: oklch(0.91 0.01 238);
+  --input: oklch(0.91 0.01 238);
+  --ring: oklch(0.61 0.16 238 / 50%);
+
+  /* Structure de Navigation (Sidebar) */
+  --sidebar: oklch(0.98 0.01 238); /* Légère teinte bleutée très douce pour se détacher du fond */
+  --sidebar-foreground: oklch(0.25 0.02 264);
+  --sidebar-primary: oklch(0.61 0.16 238);
+  --sidebar-primary-foreground: oklch(0.99 0 0);
+  --sidebar-accent: oklch(0.93 0.02 238);
+  --sidebar-accent-foreground: oklch(0.61 0.16 238);
+  --sidebar-border: oklch(0.91 0.01 238);
+  --sidebar-ring: oklch(0.61 0.16 238);
+
+  /* Rayons de courbure (Esprit d'apprentissage tactile et accueillant) */
+  --radius: 1rem; /* Arrondis de 16px plus prononcés pour le confort d'usage mobile */
+}
+
+.dark {
+  /* Éléments de structure en mode sombre */
+  --background: oklch(0.20 0.02 264); /* Fond charbon protecteur */
+  --foreground: oklch(0.98 0.01 238);
+  --card: oklch(0.24 0.02 264); /* Cartes légèrement surélevées */
+  --card-foreground: oklch(0.98 0.01 238);
+  --popover: oklch(0.24 0.02 264);
+  --popover-foreground: oklch(0.98 0.01 238);
+
+  /* Actions */
+  --primary: oklch(0.55 0.14 238); /* Bleu légèrement ajusté pour le mode sombre */
+  --primary-foreground: oklch(0.99 0 0);
+  --secondary: oklch(0.68 0.16 64);
+  --secondary-foreground: oklch(0.15 0.02 64);
+
+  /* États discrets */
+  --muted: oklch(0.28 0.02 264);
+  --muted-foreground: oklch(0.70 0.02 238);
+  --accent: oklch(0.28 0.02 264);
+  --accent-foreground: oklch(0.98 0.01 238);
+
+  --destructive: oklch(0.58 0.21 24);
+  --destructive-foreground: oklch(0.99 0 0);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.55 0.14 238);
+
+  /* Sidebar Dark */
+  --sidebar: oklch(0.18 0.02 264);
+  --sidebar-foreground: oklch(0.98 0.01 238);
+  --sidebar-primary: oklch(0.55 0.14 238);
+  --sidebar-primary-foreground: oklch(0.99 0 0);
+  --sidebar-accent: oklch(0.24 0.02 264);
+  --sidebar-accent-foreground: oklch(0.98 0.01 238);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.55 0.14 238);
+}
