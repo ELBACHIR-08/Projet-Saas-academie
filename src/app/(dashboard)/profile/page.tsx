@@ -32,7 +32,17 @@ const BADGES: BadgeItem[] = [
 ];
 
 export default function ProfilePage() {
-  const { hasActivePass, setHasActivePass } = usePass();
+  const { hasActivePass, setHasActivePass, user, setUser } = usePass();
+
+  const displayName = user ? user.fullName : "Jean Dupont";
+  const displayEmail = user ? user.email : "nom@domaine.com";
+  const initials = displayName
+    .split(" ")
+    .filter((n) => n.length > 0)
+    .map((n) => n[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase() || "JD";
 
   return (
     <div className="flex flex-col gap-6 px-5 py-6 pb-24">
@@ -47,17 +57,33 @@ export default function ProfilePage() {
       </section>
 
       {/* User Info Block */}
-      <section className="border-2 border-[var(--foreground)] p-4 bg-card flex items-center gap-4 shadow-[4px_4px_0px_0px_var(--foreground)]">
-        <div className="w-14 h-14 bg-[var(--primary)] text-[var(--primary-foreground)] flex items-center justify-center font-black text-2xl border-2 border-foreground select-none">
-          JD
+      <section className="border-2 border-[var(--foreground)] p-4 bg-card flex flex-col gap-4 shadow-[4px_4px_0px_0px_var(--foreground)]">
+        <div className="flex items-center gap-4">
+          <div className="w-14 h-14 bg-[var(--primary)] text-[var(--primary-foreground)] flex items-center justify-center font-black text-2xl border-2 border-foreground select-none">
+            {initials}
+          </div>
+          <div className="flex flex-col">
+            <h2 className="font-black text-base uppercase tracking-tight text-[var(--foreground)] leading-none mb-1">
+              {displayName}
+            </h2>
+            <span className="text-[10px] font-bold text-[var(--muted-foreground)] uppercase tracking-wider">
+              {displayEmail}
+            </span>
+          </div>
         </div>
-        <div className="flex flex-col">
-          <h2 className="font-black text-base uppercase tracking-tight text-[var(--foreground)] leading-none mb-1">
-            Jean Dupont
-          </h2>
-          <span className="text-[10px] font-bold text-[var(--muted-foreground)] uppercase tracking-wider">
-            Membre Premium • ID: #4810
-          </span>
+        
+        {/* Reset button for prototype testing */}
+        <div className="border-t border-[var(--border)] pt-3 flex justify-end">
+          <button
+            onClick={() => {
+              setUser(null);
+              setHasActivePass(false);
+              alert("Profil et Pass réinitialisés avec succès !");
+            }}
+            className="px-3 py-1.5 border border-foreground text-[9px] font-black uppercase tracking-widest bg-red-50 hover:bg-red-100 text-red-800 cursor-pointer rounded-none shadow-[1.5px_1.5px_0px_0px_var(--foreground)] active:translate-x-[1.5px] active:translate-y-[1.5px] active:shadow-none transition-all"
+          >
+            Réinitialiser mon compte
+          </button>
         </div>
       </section>
 

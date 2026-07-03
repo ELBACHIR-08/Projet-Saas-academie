@@ -3,6 +3,8 @@
 import React, { useRef, useEffect, Suspense } from "react";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePass } from "../context/PassContext";
+import ProfileCreation from "../components/ProfileCreation";
 
 interface ThemeTab {
   label: string;
@@ -86,6 +88,16 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const { user, setUser } = usePass();
+
+  // If user profile is not created yet, force the Onboarding / ProfileCreation screen
+  if (!user) {
+    return (
+      <div className="relative flex flex-col w-full max-w-[480px] h-screen overflow-hidden mx-auto border-x border-[var(--border)] bg-background">
+        <ProfileCreation OnProfileCreate={(profile) => setUser(profile)} />
+      </div>
+    );
+  }
 
   return (
     <div className="relative flex flex-col w-full max-w-[480px] h-screen overflow-hidden mx-auto border-x border-[var(--border)] bg-background text-foreground shadow-[0_0_24px_rgba(0,0,0,0.05)]">
