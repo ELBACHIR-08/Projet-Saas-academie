@@ -2,6 +2,7 @@
 
 import React from "react";
 import { usePass } from "../../context/PassContext";
+import PremiumPass from "../../components/PremiumPass";
 
 interface StatItem {
   label: string;
@@ -66,35 +67,41 @@ export default function ProfilePage() {
           Abonnement & Accès
         </h3>
         
-        <div className="border-2 border-[var(--foreground)] p-5 bg-card flex flex-col gap-4 shadow-[4px_4px_0px_0px_var(--foreground)]">
-          <div className="flex items-center justify-between">
-            <span className="font-black text-sm uppercase tracking-tight text-[var(--foreground)]">
-              Pass Académie Quotidien
-            </span>
-            <span className={`text-[10px] font-black uppercase px-2 py-0.5 border ${
-              hasActivePass 
-                ? "bg-[oklch(0.96_0.04_142)] text-[oklch(0.25_0.05_142)] border-[oklch(0.65_0.18_142)]" 
-                : "bg-amber-100 text-amber-800 border-amber-300"
-            }`}>
-              {hasActivePass ? "Actif" : "Inactif"}
-            </span>
+        {hasActivePass ? (
+          <div className="border-2 border-[var(--foreground)] p-5 bg-card flex flex-col gap-4 shadow-[4px_4px_0px_0px_var(--foreground)] animate-fade-in">
+            <div className="flex items-center justify-between">
+              <span className="font-black text-sm uppercase tracking-tight text-[var(--foreground)]">
+                Pass Académie Quotidien
+              </span>
+              <span className="text-[10px] font-black uppercase px-2 py-0.5 border bg-[oklch(0.96_0.04_142)] text-[oklch(0.25_0.05_142)] border-[oklch(0.65_0.18_142)]">
+                Actif
+              </span>
+            </div>
+
+            <p className="text-xs text-[var(--muted-foreground)] leading-relaxed font-medium">
+              Votre Pass Académie est pleinement actif. Vous bénéficiez d'un accès illimité à l'ensemble des cas d'études quotidiens et des modules d'apprentissage.
+            </p>
+
+            <button
+              onClick={() => {
+                setHasActivePass(false);
+                alert("Votre Pass Académie a été désactivé pour la simulation.");
+              }}
+              className="w-full h-12 font-bold uppercase tracking-wider text-xs border border-foreground transition-all cursor-pointer rounded-none shadow-[2.5px_2.5px_0px_0px_var(--foreground)] active:translate-x-[2.5px] active:translate-y-[2.5px] active:shadow-[0px_0px_0px_0px_var(--foreground)] bg-[oklch(0.96_0.04_142)] text-[oklch(0.25_0.05_142)] border-[oklch(0.65_0.18_142)] hover:bg-[oklch(0.93_0.06_142)]"
+            >
+              Désactiver le Pass Académie
+            </button>
           </div>
-
-          <p className="text-xs text-[var(--muted-foreground)] leading-relaxed font-medium">
-            Activez votre Pass Académie pour débloquer l'accès complet à tous les défis quotidiens en vidéo de 5 minutes et boostez votre montée en compétences.
-          </p>
-
-          <button
-            onClick={() => setHasActivePass(!hasActivePass)}
-            className={`w-full h-12 font-bold uppercase tracking-wider text-xs border border-foreground transition-all cursor-pointer rounded-none shadow-[2.5px_2.5px_0px_0px_var(--foreground)] active:translate-x-[2.5px] active:translate-y-[2.5px] active:shadow-[0px_0px_0px_0px_var(--foreground)] ${
-              hasActivePass 
-                ? "bg-[oklch(0.96_0.04_142)] text-[oklch(0.25_0.05_142)] border-[oklch(0.65_0.18_142)] hover:bg-[oklch(0.93_0.06_142)]" 
-                : "bg-[var(--primary)] text-white hover:bg-[var(--primary)]/90"
-            }`}
-          >
-            {hasActivePass ? "Désactiver mon Pass Académie" : "Activer mon Pass Académie"}
-          </button>
-        </div>
+        ) : (
+          <div className="border border-[var(--border)] bg-card">
+            <PremiumPass
+              onPaymentSuccess={() => {
+                setHasActivePass(true);
+                alert("Paiement réussi ! Votre Pass Académie Premium est désormais activé.");
+              }}
+            />
+          </div>
+        )}
       </section>
 
       {/* Stats Grid */}
